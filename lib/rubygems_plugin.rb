@@ -31,7 +31,7 @@ module Autobundle
         contents = File.read(lock)
         if contents =~ /\A---/
           if contents =~ /- bundler:\s*\n\s+version:\s*(.+)\n/
-            "= $1"
+            "= #{$1}"
           else
             '~> 0.9.0'
           end
