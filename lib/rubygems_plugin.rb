@@ -1,11 +1,16 @@
 module Autobundle
   def self.setup
     if gemfile = Utils.find_gemfile
-      gem 'bundler', Utils.deduce_bundler_version(gemfile)
+      version = Utils.deduce_bundler_version(gemfile)
+      gem 'bundler', version
       ENV['BUNDLE_GEMFILE'] = gemfile
       require 'bundler'
       Bundler.setup
     end
+  rescue Gem::LoadError => e
+    $stderr.puts "You have a Gemfile for bundler #{version} but don't have it installed."
+  rescue Bundler::BundlerError => e
+    $stderr.puts "You have a Gemfile but your bundle is half-baked. Leaving it in the oven. #{e}"
   end
 
   module Utils
